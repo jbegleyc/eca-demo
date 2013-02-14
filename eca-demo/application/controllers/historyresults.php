@@ -26,6 +26,16 @@ class HistoryResults extends CI_Controller {
   	$this->table->set_template($tmpl);
   	$data['table_results'] = $this->table->generate($query);
   	$data['address'] = $this->history->get_address($acctnum);
+	
+	// get chart data and format it for google charts
+	$chartdata = $this->history->get_chart_data($acctnum);
+	$chartrows = array();
+	foreach ($chartdata as $row) {
+		$newrow = array($row['EndDate'], (int)$row['Consumption']);
+		$chartrows[] = $newrow; 
+	}
+	
+	$data['chartrecs'] = json_encode(array_reverse($chartrows));
   	
   	$this->load->view('templates/header');
   	$this->load->view('view_history', $data);

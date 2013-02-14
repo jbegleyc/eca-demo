@@ -35,6 +35,17 @@
  			return $query->row_array();
  			
  		}
+		
+		function get_chart_data($acctnum) {
+			$this->db->select('EndDate, Consumption');
+			$this -> db -> from('inv_master_summary');
+   			$this -> db -> where('ldcAcct', $acctnum);
+   			$this->db->order_by("TransactionDate", "desc"); 
+			$this->db->limit(12);
+			
+			$query = $this->db->get();
+ 			return $query->result_array();
+		}
  
   }
  
